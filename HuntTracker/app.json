@@ -39,6 +39,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Hunt Tracker to use your location to record hunt locations and provide accurate weather and solunar data."
         }
+      ],
+      [
+        "react-native-maps",
+        {
+          "useGoogleMapsOnAndroid": false
+        }
       ]
     ]
   }
