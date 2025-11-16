@@ -24,26 +24,37 @@ export default function HomeScreen({ navigation }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    loadData();
+    console.log('HomeScreen mounted');
+    loadData().catch(err => {
+      console.error('Fatal error in loadData:', err);
+    });
   }, []);
 
   const loadData = async () => {
     try {
+      console.log('loadData started');
       setError(null);
 
       // Get current location
+      console.log('Getting location...');
       const loc = await locationService.getCurrentLocation();
+      console.log('Location received:', loc);
       setLocation(loc);
 
       // Get weather
+      console.log('Getting weather...');
       const w = await weatherService.getWeather(loc.latitude, loc.longitude);
+      console.log('Weather received');
       setWeather(w);
 
       // Get solunar data
+      console.log('Calculating solunar...');
       const sol = solunarService.calculateSolunar(loc.latitude, loc.longitude);
+      console.log('Solunar calculated');
       setSolunar(sol);
 
       // Check for pattern matches with current conditions
+      console.log('Checking patterns...');
       const currentConditions = {
         date: new Date(),
         location: loc,
@@ -51,12 +62,16 @@ export default function HomeScreen({ navigation }) {
         solunar: sol
       };
       const m = await patternService.checkForMatches(currentConditions);
+      console.log('Patterns checked');
       setMatches(m);
 
+      console.log('loadData complete');
       setLoading(false);
       setRefreshing(false);
     } catch (err) {
       console.error('Error loading data:', err);
+      console.error('Error type:', err.constructor.name);
+      console.error('Error message:', err.message);
       setError(err?.message || 'Failed to load data. Please check location permissions.');
       setLoading(false);
       setRefreshing(false);
