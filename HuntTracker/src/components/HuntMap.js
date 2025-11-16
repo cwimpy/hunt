@@ -1,74 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 export default function HuntMap({ location, height = 200 }) {
-  const [MapView, setMapView] = useState(null);
-  const [Marker, setMarker] = useState(null);
-  const [mapError, setMapError] = useState(false);
-
-  useEffect(() => {
-    // Try to load react-native-maps
-    // This will work in custom dev builds but not in Expo Go
-    const loadMaps = async () => {
-      try {
-        const maps = await import('react-native-maps');
-        setMapView(() => maps.default);
-        setMarker(() => maps.Marker);
-      } catch (error) {
-        console.log('Maps not available in Expo Go, showing coordinates instead');
-        setMapError(true);
-      }
-    };
-    loadMaps();
-  }, []);
-
   if (!location || !location.latitude || !location.longitude) {
     return null;
   }
 
-  // Show coordinates if maps aren't available (Expo Go)
-  if (mapError || !MapView) {
-    return (
-      <View style={[styles.container, styles.fallbackContainer, { height }]}>
-        <Text style={styles.fallbackTitle}>{location.name || "Hunt Location"}</Text>
-        <Text style={styles.fallbackText}>
-          📍 {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
-        </Text>
-        {location.address && (
-          <Text style={styles.fallbackAddress}>{location.address}</Text>
-        )}
-        <Text style={styles.fallbackNote}>
-          Maps require a custom build. Showing coordinates.
-        </Text>
-      </View>
-    );
-  }
-
+  // For now, always show coordinates fallback in Expo Go
+  // Maps will work when you create a custom development build with EAS
   return (
-    <View style={[styles.container, { height }]}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        }}
-        showsUserLocation
-        showsMyLocationButton
-      >
-        <Marker
-          coordinate={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-          title={location.name || "Hunt Location"}
-          description={location.address}
-          pinColor="#2e7d32"
-        />
-      </MapView>
+    <View style={[styles.container, styles.fallbackContainer, { height }]}>
+      <Text style={styles.fallbackTitle}>{location.name || "Hunt Location"}</Text>
+      <Text style={styles.fallbackText}>
+        📍 {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
+      </Text>
+      {location.address && (
+        <Text style={styles.fallbackAddress}>{location.address}</Text>
+      )}
+      <Text style={styles.fallbackNote}>
+        Maps require a custom development build
+      </Text>
     </View>
   );
 }
