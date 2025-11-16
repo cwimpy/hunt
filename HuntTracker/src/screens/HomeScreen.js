@@ -6,15 +6,18 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal,
+  Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import locationService from '../services/locationService';
 import weatherService from '../services/weatherService';
 import solunarService from '../services/solunarService';
 import patternService from '../services/patternService';
+import NewHuntScreen from './NewHuntScreen';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [location, setLocation] = useState(null);
@@ -22,6 +25,7 @@ export default function HomeScreen({ navigation }) {
   const [solunar, setSolunar] = useState(null);
   const [matches, setMatches] = useState([]);
   const [error, setError] = useState(null);
+  const [showNewHuntModal, setShowNewHuntModal] = useState(false);
 
   useEffect(() => {
     console.log('HomeScreen mounted');
@@ -107,6 +111,7 @@ export default function HomeScreen({ navigation }) {
   const { inMajor, inMinor } = solunar ? solunarService.isActiveNow(solunar.majorPeriods, solunar.minorPeriods) : { inMajor: false, inMinor: false };
 
   return (
+    <>
     <ScrollView
       style={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
@@ -119,7 +124,7 @@ export default function HomeScreen({ navigation }) {
       {/* Quick Actions */}
       <TouchableOpacity
         style={styles.newHuntButton}
-        onPress={() => navigation.navigate('NewHunt', { location, weather, solunar })}
+        onPress={() => setShowNewHuntModal(true)}
       >
         <Ionicons name="add-circle" size={24} color="#fff" />
         <Text style={styles.newHuntButtonText}>Log New Hunt</Text>
@@ -257,6 +262,34 @@ export default function HomeScreen({ navigation }) {
         </View>
       )}
     </ScrollView>
+
+    {/* New Hunt Modal */}
+    <Modal
+      visible={showNewHuntModal}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={() => setShowNewHuntModal(false)}
+    >
+      <View style={{ flex: 1 }}>
+        <View style={styles.modalHeader}>
+          <TouchableOpacity onPress={() => setShowNewHuntModal(false)}>
+            <Ionicons name="close" size={28} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.modalHeaderTitle}>Log New Hunt</Text>
+          <View style={{ width: 28 }} />
+        </View>
+        <NewHuntScreen
+          route={{ params: { location, weather, solunar } }}
+          navigation={{
+            goBack: () => {
+              setShowNewHuntModal(false);
+              loadData(); // Refresh data after logging hunt
+            }
+          }}
+        />
+      </View>
+    </Modal>
+    </>
   );
 }
 
@@ -485,5 +518,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     fontWeight: '500',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#2e7d32',
+    paddingHorizontal: 16,
+    paddingTop: 60,
+    paddingBottom: 16,
+  },
+  modalHeaderTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
