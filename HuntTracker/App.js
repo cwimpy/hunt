@@ -11,13 +11,10 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Home"
           component={HomeScreenSimple}
-          options={{
-            headerShown: false
-          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
