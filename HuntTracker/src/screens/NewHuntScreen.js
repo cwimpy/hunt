@@ -17,6 +17,7 @@ import weatherService from '../services/weatherService';
 import solunarService from '../services/solunarService';
 import storageService from '../services/storageService';
 
+import HuntMap from '../components/HuntMap';
 export default function NewHuntScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -140,6 +141,7 @@ export default function NewHuntScreen({ navigation, route }) {
         <Text style={styles.coordinates}>
           {location && locationService.formatCoordinates(location.latitude, location.longitude)}
         </Text>
+        {location && <HuntMap location={location} height={180} />}
       </View>
 
       {/* Weather */}

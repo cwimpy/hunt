@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import storageService from '../services/storageService';
 import locationService from '../services/locationService';
 import solunarService from '../services/solunarService';
+import HuntMap from '../components/HuntMap';
 
 export default function HuntDetailsScreen({ navigation, route }) {
   const [hunt, setHunt] = useState(null);
@@ -118,6 +119,7 @@ export default function HuntDetailsScreen({ navigation, route }) {
           <Text style={styles.cardSubtext}>
             {locationService.formatCoordinates(hunt.location.latitude, hunt.location.longitude)}
           </Text>
+          <HuntMap location={hunt.location} height={200} />
         </View>
       )}
 

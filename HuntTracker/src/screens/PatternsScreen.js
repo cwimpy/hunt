@@ -205,7 +205,7 @@ export default function PatternsScreen() {
           {patterns.windConditions && (
             <View style={styles.card}>
               <View style={styles.cardHeader}>
-                <Ionicons name="wind" size={20} color="#0288d1" />
+                <Ionicons name="flag-outline" size={20} color="#0288d1" />
                 <Text style={styles.cardTitle}>Wind Pattern</Text>
               </View>
               <View style={styles.tempStats}>

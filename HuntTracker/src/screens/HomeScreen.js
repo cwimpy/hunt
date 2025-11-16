@@ -189,7 +189,7 @@ export default function HomeScreen() {
           </View>
           <View style={styles.weatherDetails}>
             <View style={styles.weatherDetail}>
-              <Ionicons name="wind" size={16} color="#666" />
+              <Ionicons name="flag-outline" size={16} color="#666" />
               <Text style={styles.weatherDetailText}>{weather.windSpeed} mph {weather.windDirection}</Text>
             </View>
             <View style={styles.weatherDetail}>
