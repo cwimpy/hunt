@@ -8,7 +8,6 @@ import {
   RefreshControl
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import patternService from '../services/patternService';
 import storageService from '../services/storageService';
 
@@ -18,11 +17,9 @@ export default function PatternsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [stats, setStats] = useState({ total: 0, successful: 0 });
 
-  useFocusEffect(
-    React.useCallback(() => {
-      loadPatterns();
-    }, [])
-  );
+  useEffect(() => {
+    loadPatterns();
+  }, []);
 
   const loadPatterns = async () => {
     try {

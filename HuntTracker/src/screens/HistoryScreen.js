@@ -6,22 +6,23 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import storageService from '../services/storageService';
+import HuntDetailsScreen from './HuntDetailsScreen';
 
-export default function HistoryScreen({ navigation }) {
+export default function HistoryScreen() {
   const [hunts, setHunts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedHuntId, setSelectedHuntId] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      loadHunts();
-    }, [])
-  );
+  useEffect(() => {
+    loadHunts();
+  }, []);
 
   const loadHunts = async () => {
     try {
@@ -46,7 +47,10 @@ export default function HistoryScreen({ navigation }) {
   const renderHuntItem = ({ item }) => (
     <TouchableOpacity
       style={styles.huntCard}
-      onPress={() => navigation.navigate('HuntDetails', { huntId: item.id })}
+      onPress={() => {
+        setSelectedHuntId(item.id);
+        setShowDetailsModal(true);
+      }}
     >
       <View style={styles.huntHeader}>
         <View style={styles.huntHeaderLeft}>
@@ -152,6 +156,35 @@ export default function HistoryScreen({ navigation }) {
           }
         />
       )}
+
+      {/* Hunt Details Modal */}
+      <Modal
+        visible={showDetailsModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowDetailsModal(false)}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={() => setShowDetailsModal(false)}>
+              <Ionicons name="close" size={28} color="#fff" />
+            </TouchableOpacity>
+            <Text style={styles.modalHeaderTitle}>Hunt Details</Text>
+            <View style={{ width: 28 }} />
+          </View>
+          {selectedHuntId && (
+            <HuntDetailsScreen
+              route={{ params: { huntId: selectedHuntId } }}
+              navigation={{
+                goBack: () => {
+                  setShowDetailsModal(false);
+                  loadHunts(); // Refresh after potential delete
+                }
+              }}
+            />
+          )}
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -284,5 +317,19 @@ const styles = StyleSheet.create({
     color: '#999',
     marginTop: 8,
     textAlign: 'center',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#2e7d32',
+    paddingHorizontal: 16,
+    paddingTop: 60,
+    paddingBottom: 16,
+  },
+  modalHeaderTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
