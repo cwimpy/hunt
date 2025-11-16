@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation }) {
       setRefreshing(false);
     } catch (err) {
       console.error('Error loading data:', err);
-      setError(err.message);
+      setError(err?.message || 'Failed to load data. Please check location permissions.');
       setLoading(false);
       setRefreshing(false);
     }
