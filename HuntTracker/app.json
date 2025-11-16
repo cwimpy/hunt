@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Hunt Tracker",
+    "slug": "hunt-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2e7d32"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hunttracker.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Hunt Tracker needs your location to record hunt locations and provide accurate weather and solunar data.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Hunt Tracker needs your location to record hunt locations and provide accurate weather and solunar data."
+      }
+    },
+    "android": {
+      "package": "com.hunttracker.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#2e7d32"
+      },
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Hunt Tracker to use your location to record hunt locations and provide accurate weather and solunar data."
+        }
+      ]
+    ]
+  }
+}
