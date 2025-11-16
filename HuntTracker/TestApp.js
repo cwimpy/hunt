@@ -1,14 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 
-// Temporarily using simple test component to isolate the issue
-export default function App() {
+export default function TestApp() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Hunt Tracker - Test Mode</Text>
       <Text style={styles.subtext}>If you see this, the basic app is working!</Text>
-      <StatusBar style="light" />
     </View>
   );
 }
