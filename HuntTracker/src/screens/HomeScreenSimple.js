@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
+  console.log('HomeScreenSimple rendering...');
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home Screen Works!</Text>
