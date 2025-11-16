@@ -32,6 +32,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Hunt Tracker to use your location to record hunt locations and provide accurate weather and solunar data."
+        }
+      ]
+    ]
   }
 }
