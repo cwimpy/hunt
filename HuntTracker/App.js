@@ -4,7 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { enableScreens } from 'react-native-screens';
 import HomeScreenSimple from './src/screens/HomeScreenSimple';
 
-enableScreens();
+// Disable native screens to use JS-only implementation
+enableScreens(false);
 
 const Stack = createStackNavigator();
 
